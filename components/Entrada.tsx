@@ -13,7 +13,7 @@ const Entrada = ({entrada}:IEntrada):JSX.Element => {
     const {url} = imagen;
   return (
     <article>
-        <Image src={url} alt={`Ìmagen Blog ${titulo}`} width={800} height={600} layout='responsive'/>
+        <Image priority={true} src={url} alt={`Ìmagen Blog ${titulo}`} width={800} height={600} layout='responsive'/>
         <div className={styles.contenido}>
             <h3>{titulo}</h3>
             <p className={styles.fecha}>{formatearFecha(published_at)}</p>
