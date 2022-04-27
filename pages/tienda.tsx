@@ -1,11 +1,13 @@
 import Layout from "../components/Layout"
-import { GuitarTypes } from '../types/guitarTypes';
 import Guitarra from '../components/Guitarra';
 import styles from '../styles/Tienda.module.css';
+import { GuitarTypes } from '../types/guitarTypes';
 
 interface ITienda {
   guitarras : GuitarTypes[]
 }
+
+
 
 const Tienda = ({guitarras}:ITienda):JSX.Element => {
   return (
