@@ -10,6 +10,7 @@ export interface BlogsType {
     updatedAt:    string;
     __v:          number;
     imagen:       Imagen;
+    url:          string;
     id:           string;
 }
 
@@ -40,9 +41,9 @@ export enum EXT {
 }
 
 export interface Formats {
-    thumbnail?: Medium;
-    medium?:    Medium;
-    small?:     Medium;
+    thumbnail: Medium;
+    medium:    Medium;
+    small:     Medium;
 }
 
 export interface Medium {

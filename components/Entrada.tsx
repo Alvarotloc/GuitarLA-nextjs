@@ -9,16 +9,15 @@ interface IEntrada {
 }
 
 const Entrada = ({entrada}:IEntrada):JSX.Element => {
-    const {titulo,resumen,imagen,published_at,id} = entrada;
-    const {url} = imagen;
+    const {titulo,resumen,imagen,published_at,url} = entrada;
   return (
     <article>
-        <Image priority={true} src={url} alt={`Ìmagen Blog ${titulo}`} width={800} height={600} layout='responsive'/>
+        <Image priority={true} src={imagen.url} alt={`Ìmagen Blog ${titulo}`} width={800} height={600} layout='responsive'/>
         <div className={styles.contenido}>
             <h3>{titulo}</h3>
             <p className={styles.fecha}>{formatearFecha(published_at)}</p>
             <p className={styles.resumen}>{resumen}</p>
-            <Link href={`/blog/${id}`}>
+            <Link href={`/blog/${url}`}>
                 <a className={styles.enlace}>
                 Leer Entrada
                 </a>
