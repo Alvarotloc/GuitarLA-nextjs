@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import Layout from '../components/Layout';
 const Nosotros = () => {
   return (
@@ -6,7 +5,6 @@ const Nosotros = () => {
         <Layout pagina='- Nosotros'>
             <h1>Desde nosotros</h1>
         </Layout>
-        <Link href='/'>Ir a Inicio</Link>
     </div>
   )
 }
