@@ -20,7 +20,7 @@ const Blog = ({entradas}:IBlog):JSX.Element => {
 }
 
 export async function getStaticProps() {
-  const url = `${process.env.API_URL}/blogs`;
+  const url = `${process.env.API_URL}/blogs?_sort=created_at:asc`;
   const respuesta = await fetch(url);
   const entradas = await respuesta.json();
   return {
