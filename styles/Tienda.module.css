@@ -12,3 +12,22 @@
         grid-template-columns: repeat(3,1fr);
     }
 }
+
+.enlace {
+    display: block;
+    width: 30rem;
+    margin: 5rem auto;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--negro);
+    border: 2px solid var(--primary);
+    padding: 1rem 5rem;
+    transition: all .3s;
+}
+.enlace:hover{
+    background-color: var(--primary);
+    color: var(--blanco);
+}
