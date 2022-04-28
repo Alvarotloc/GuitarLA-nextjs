@@ -3,7 +3,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { useEffect, useState } from 'react'
 
-interface IProducto {
+export interface IProducto {
   id : string;
   imagen : string,
   nombre : string,
@@ -16,11 +16,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     const carritoLS = JSON.parse(localStorage.getItem('carrito') || '[]') ?? [];
-    setCarrito(carritoLS);
+    if(carritoLS.length > 0){
+      setCarrito(carritoLS);
+    }
   },[])
 
   useEffect(() => {
-    localStorage.setItem('carrito', JSON.stringify(carrito));
+      localStorage.setItem('carrito', JSON.stringify(carrito));
   },[carrito])
 
   const agregarCarrito = (producto:IProducto) => {
@@ -28,7 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     if(carrito.some(articulo => articulo.id === producto.id)){
       const carritoActualizado = carrito.map(articulo => {
         if(articulo.id === producto.id){
-          articulo.cantidad = producto.cantidad + articulo.cantidad;
+          articulo.cantidad = producto.cantidad;
         }
         return articulo;
       });
@@ -37,7 +39,25 @@ function MyApp({ Component, pageProps }: AppProps) {
     setCarrito([...carrito,producto]); 
   }
 
-  return <Component {...pageProps} carrito={carrito} agregarCarrito={agregarCarrito}/>
+  const actualizarCantidad = (producto:IProducto) => {
+    const carritoActualizado = carrito.map(articulo => {
+      if(articulo.id === producto.id){
+        articulo.cantidad = producto.cantidad;
+      }
+      return articulo;
+    });
+    setCarrito(carritoActualizado);
+  }
+
+  const eliminarProducto = (id:string) => {
+    const confirmar = confirm('¿Desea eliminar este producto?');
+    if(confirmar){
+      const carritoActualizado = carrito.filter(producto => producto.id !== id);
+      setCarrito(carritoActualizado);
+    }
+  }
+
+  return <Component {...pageProps} carrito={carrito} agregarCarrito={agregarCarrito} actualizarCantidad={actualizarCantidad} eliminarProducto={eliminarProducto}/>
 }
 
 export default MyApp
