@@ -5,8 +5,10 @@ import Guitarra from '../components/Guitarra';
 import styles from '../styles/Tienda.module.css'
 import { CursoTypes } from '../types/cursoTypes';
 import Curso from '../components/Curso';
+import { BlogsType } from '../types/blogsType';
+import ListadoBlog from '../components/ListadoBlog';
 
-const Home: NextPage<{guitarras : GuitarTypes[],curso : CursoTypes}> = ({guitarras,curso}) => {
+const Home: NextPage<{guitarras : GuitarTypes[],curso : CursoTypes, entradas : BlogsType[]}> = ({guitarras,curso,entradas}) => {
   return (
       <Layout pagina='- Inicio'>
         <div>
@@ -17,6 +19,9 @@ const Home: NextPage<{guitarras : GuitarTypes[],curso : CursoTypes}> = ({guitarr
           </div>
         </main>
           <Curso curso={curso}/>
+          <section className="contenedor">
+          <ListadoBlog entradas={entradas}/>
+          </section>
         </div>
       </Layout>
   )
@@ -26,20 +31,24 @@ export async function getServerSideProps(){
   
   const urlGuitarras = `${process.env.API_URL}/guitarras?_sort=precio:asc`;
   const urlCurso = `${process.env.API_URL}/cursos`;
+  const urlBlogs = `${process.env.API_URL}/blogs?_limit=3&_sort=created_at:asc`;
 
-  const [resGuitarras,resCurso] = await Promise.all([
+  const [resGuitarras,resCurso,resEntradas] = await Promise.all([
     fetch(urlGuitarras),
-    fetch(urlCurso)
+    fetch(urlCurso),
+    fetch(urlBlogs)
   ]);
-  const [guitarras,curso] = await Promise.all([
+  const [guitarras,curso,entradas] = await Promise.all([
     resGuitarras.json(),
-    resCurso.json()
+    resCurso.json(),
+    resEntradas.json()
   ]);
 
   return {
     props : {
       guitarras,
-      curso
+      curso,
+      entradas
     }
   }
 }
