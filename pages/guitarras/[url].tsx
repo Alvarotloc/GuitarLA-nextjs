@@ -2,6 +2,7 @@ import Layout from "../../components/Layout";
 import styles from "../../styles/Guitarra.module.css";
 import { GuitarTypes } from "../../types/guitarTypes";
 import Image from "next/image";
+import { FormEvent, useState } from 'react';
 
 type IQuery = {
   query: IUrl;
@@ -9,12 +10,33 @@ type IQuery = {
 type IUrl = {
   url: string;
 };
-type IEntrada = {
-  entrada: GuitarTypes[];
+type IGuitarra = {
+  guitarra: GuitarTypes[];
+  agregarCarrito : Function;
 };
 
-const ProductoGuitarra = ({ entrada }: IEntrada): JSX.Element => {
-  const { descripcion, nombre, imagen, precio } = entrada[0];
+const ProductoGuitarra = ({ guitarra,agregarCarrito }: IGuitarra): JSX.Element => {
+  const [cantidad, setCantidad] = useState<number>(1);
+  const { descripcion, nombre, imagen, precio,id } = guitarra[0];
+
+  const handleSubmit = (e:FormEvent) => {
+    e.preventDefault();
+
+    if(cantidad < 1){
+      return alert('Cantidad no válida');
+    }
+    const guitarraSeleccionada = {
+      id,
+      imagen : imagen.url,
+      nombre,
+      precio,
+      cantidad
+    };
+
+    agregarCarrito(guitarraSeleccionada);
+  }
+
+
   return (
     <Layout pagina={`- Guitarra ${nombre}`}>
       <div className={styles.guitarra}>
@@ -29,9 +51,9 @@ const ProductoGuitarra = ({ entrada }: IEntrada): JSX.Element => {
           <h3>{nombre}</h3>
           <p className={styles.descripcion}>{descripcion}</p>
           <p className={styles.precio}>{precio}€</p>
-          <form className={styles.formulario}>
-            <label htmlFor="">Cantidad</label>
-            <select name="" id="">
+          <form className={styles.formulario} onSubmit={handleSubmit}>
+            <label htmlFor="cantidad">Cantidad</label>
+            <select name="cantidad" id="cantidad" value={cantidad} onChange={e => setCantidad(parseInt(e.target.value))}>
               <option value="">-- Seleccione --</option>
               <option value="1">1</option>
               <option value="2">2</option>
@@ -51,10 +73,10 @@ export async function getServerSideProps({ query: { url } }: IQuery) {
   const urlFetch = `${process.env.API_URL}/guitarras/?url=${url}`;
 
   const respuesta = await fetch(urlFetch);
-  const entrada = await respuesta.json();
+  const guitarra = await respuesta.json();
   return {
     props: {
-      entrada,
+      guitarra,
     },
   };
 }
