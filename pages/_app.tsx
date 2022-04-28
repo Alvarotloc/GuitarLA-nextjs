@@ -1,7 +1,7 @@
 import '../styles/normalize.css'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface IProducto {
   id : string;
@@ -13,6 +13,15 @@ interface IProducto {
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [carrito, setCarrito] = useState<IProducto[]>([]);
+
+  useEffect(() => {
+    const carritoLS = JSON.parse(localStorage.getItem('carrito') || '[]') ?? [];
+    setCarrito(carritoLS);
+  },[])
+
+  useEffect(() => {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+  },[carrito])
 
   const agregarCarrito = (producto:IProducto) => {
 
